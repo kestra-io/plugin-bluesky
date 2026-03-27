@@ -1,8 +1,8 @@
-group: io.kestra.plugin.template
-name: "template"
-title: "Template"
-description: "Plugin template for Kestra"
-body: ""
+group: io.kestra.plugin.bluesky
+name: "bluesky"
+title: "Bluesky"
+description: "Tasks that post messages to Bluesky (AT Protocol)."
+body: "Provide Bluesky credentials and post content to publish skeets from Kestra workflows, handling authentication and response payloads via the AT Protocol API."
 videos: []
 createdBy: "Kestra Core Team"
 managedBy: "Kestra Core Team"
