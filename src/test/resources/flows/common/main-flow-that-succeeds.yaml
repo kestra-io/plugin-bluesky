@@ -1,0 +1,6 @@
+id: main-flow-that-succeeds
+namespace: io.kestra.tests
+tasks:
+  - id: ok
+    type: io.kestra.core.tasks.debugs.Return
+    format: "success"
