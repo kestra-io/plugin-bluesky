@@ -40,7 +40,7 @@ import lombok.experimental.SuperBuilder;
                     type: io.kestra.plugin.bluesky.BlueskyExecution
                     identifier: "myhandle.bsky.social"
                     appPassword: "{{ secret('BLUESKY_APP_PASSWORD') }}"
-                    executionId: "{{ trigger.executionId }}"
+                    executionId: "{{ trigger.executionId ?? execution.id }}"
                     customMessage: "Production workflow failed - immediate attention required!"
                     customFields:
                       Environment: "Production"
@@ -72,7 +72,7 @@ import lombok.experimental.SuperBuilder;
                     type: io.kestra.plugin.bluesky.BlueskyExecution
                     identifier: "myhandle.bsky.social"
                     appPassword: "{{ secret('BLUESKY_APP_PASSWORD') }}"
-                    executionId: "{{ trigger.executionId }}"
+                    executionId: "{{ trigger.executionId ?? execution.id }}"
                     customMessage: "Deployment completed successfully!"
                     options:
                       readTimeout: PT5S
@@ -94,7 +94,7 @@ public class BlueskyExecution extends BlueskyTemplate implements ExecutionInterf
 
     @Schema(
         title = "Execution ID",
-        description = "Execution to include in the template; defaults to the current execution and should be set to {{ trigger.executionId }} when called from a Flow trigger"
+        description = "Execution to include in the template; defaults to the current execution and should be set to {{ trigger.executionId ?? execution.id }} when called from a Flow trigger"
     )
     @Builder.Default
     private final Property<String> executionId = Property.ofExpression("{{ execution.id }}");

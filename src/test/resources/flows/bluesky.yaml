@@ -12,7 +12,7 @@ tasks:
     identifier: "testhandle.bsky.social"
     appPassword: "test-app-password"
     baseUrl: "{{ inputs.baseUrl }}"
-    executionId: "{{ trigger.executionId }}"
+    executionId: "{{ trigger.executionId ?? execution.id }}"
     customMessage: "myCustomMessage"
     customFields:
       Environment: "DEV"
