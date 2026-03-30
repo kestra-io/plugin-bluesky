@@ -1,0 +1,109 @@
+package io.kestra.plugin.bluesky;
+
+import java.time.Duration;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+
+import io.kestra.core.junit.annotations.KestraTest;
+import io.kestra.core.models.executions.Execution;
+import io.kestra.core.queues.QueueFactoryInterface;
+import io.kestra.core.queues.QueueInterface;
+import io.kestra.core.runners.TestRunnerUtils;
+import io.kestra.core.utils.Await;
+import io.kestra.core.utils.TestsUtils;
+
+import io.micronaut.context.ApplicationContext;
+import io.micronaut.runtime.server.EmbeddedServer;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import reactor.core.publisher.Flux;
+
+import static io.kestra.core.tenant.TenantService.MAIN_TENANT;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@KestraTest
+public class AbstractBlueskyTest {
+    @Inject
+    protected EmbeddedServer embeddedServer;
+
+    @Inject
+    protected ApplicationContext applicationContext;
+
+    @Inject
+    @Named(QueueFactoryInterface.EXECUTION_NAMED)
+    protected QueueInterface<Execution> executionQueue;
+
+    @Inject
+    protected TestRunnerUtils runnerUtils;
+
+    @BeforeAll
+    void startServer() {
+        embeddedServer = applicationContext.getBean(EmbeddedServer.class);
+        embeddedServer.start();
+    }
+
+    @AfterAll
+    void stopServer() {
+        if (embeddedServer != null) {
+            embeddedServer.stop();
+        }
+    }
+
+    @BeforeEach
+    void reset() {
+        FakeBlueskyController.lastPostBody = null;
+    }
+
+    public static String waitForPostBody(Supplier<String> dataSupplier, long timeoutMs) throws InterruptedException, TimeoutException {
+        try {
+            return Await.until(
+                dataSupplier::get,
+                Duration.ofMillis(100),
+                Duration.ofSeconds(5)
+            );
+        } catch (TimeoutException e) {
+            throw new TimeoutException("Bluesky post body did not arrive within " + timeoutMs + "ms.");
+        }
+    }
+
+    protected Execution runAndCaptureExecution(String triggeringFlowId, String notificationFlowId) throws Exception {
+        var queueCount = new CountDownLatch(1);
+        var last = new AtomicReference<Execution>();
+
+        Flux<Execution> receive = TestsUtils.receive(executionQueue, execution ->
+        {
+            if (execution.getLeft().getFlowId().equals(notificationFlowId)) {
+                last.set(execution.getLeft());
+                queueCount.countDown();
+            }
+        });
+
+        var execution = runnerUtils.runOne(
+            MAIN_TENANT,
+            "io.kestra.tests",
+            triggeringFlowId
+        );
+
+        var await = queueCount.await(20, TimeUnit.SECONDS);
+        assertThat(await, is(true));
+
+        var triggeredExecution = last.get();
+        assertThat(triggeredExecution, notNullValue());
+        assertThat(triggeredExecution.getTrigger().getVariables().get("executionId"), is(execution.getId()));
+
+        receive.blockLast();
+
+        return execution;
+    }
+}
