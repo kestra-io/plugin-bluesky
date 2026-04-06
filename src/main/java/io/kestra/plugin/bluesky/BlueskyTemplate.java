@@ -40,6 +40,7 @@ public abstract class BlueskyTemplate extends AbstractBlueskyConnection {
 
     @Schema(title = "Bluesky identifier", description = "Your Bluesky handle (e.g. `myhandle.bsky.social`) or email address used to authenticate.")
     @NotNull
+    @PluginProperty(group = "main")
     protected Property<String> identifier;
 
     @Schema(title = "App password", description = """
@@ -47,20 +48,24 @@ public abstract class BlueskyTemplate extends AbstractBlueskyConnection {
         Never use your main account password here.
         """)
     @NotNull
+    @PluginProperty(group = "main")
     protected Property<String> appPassword;
 
     @Schema(title = "Base URL", description = "The base URL of the Bluesky PDS (Personal Data Server). Defaults to `https://bsky.social`.")
     @Builder.Default
+    @PluginProperty(group = "connection")
     protected Property<String> baseUrl = Property.ofValue("https://bsky.social");
 
     @Schema(title = "Template URI", description = "Classpath Pebble template URI used to render the post body", hidden = true)
-    @PluginProperty(hidden = true)
+    @PluginProperty(hidden = true, group = "advanced")
     protected Property<String> templateUri;
 
     @Schema(title = "Template variables", description = "Key-value map rendered and injected into the template before sending")
+    @PluginProperty(group = "advanced")
     protected Property<Map<String, Object>> templateRenderMap;
 
     @Schema(title = "Post text body", description = "Direct post text that bypasses the template; must fit within 300 graphemes")
+    @PluginProperty(group = "advanced")
     protected Property<String> textBody;
 
     @Override

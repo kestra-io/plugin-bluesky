@@ -13,6 +13,7 @@ import io.kestra.core.runners.RunContext;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import io.kestra.core.models.annotations.PluginProperty;
 
 @SuperBuilder
 @ToString
@@ -97,12 +98,15 @@ public class BlueskyExecution extends BlueskyTemplate implements ExecutionInterf
         description = "Execution to include in the template; defaults to the current execution and should be set to {{ trigger.executionId ?? execution.id }} when called from a Flow trigger"
     )
     @Builder.Default
+    @PluginProperty(group = "advanced")
     private final Property<String> executionId = Property.ofExpression("{{ execution.id }}");
 
     @Schema(title = "Custom fields", description = "Key-value pairs appended to the rendered template output")
+    @PluginProperty(group = "advanced")
     private Property<Map<String, Object>> customFields;
 
     @Schema(title = "Custom message", description = "Optional extra text appended to the template output")
+    @PluginProperty(group = "advanced")
     private Property<String> customMessage;
 
     @Override
