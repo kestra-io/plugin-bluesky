@@ -98,7 +98,7 @@ dependencies {
     testImplementation "org.hamcrest:hamcrest-library"
 
     // wiremock for mocking external HTTP APIs
-    testImplementation "org.wiremock:wiremock-jetty12:3.13.0"
+    testImplementation "org.wiremock:wiremock-jetty12:3.13.2"
 }
 
 /**********************************************************************************************************************\
