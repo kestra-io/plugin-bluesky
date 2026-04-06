@@ -31,7 +31,7 @@ public abstract class AbstractBlueskyConnection extends Task implements Runnable
         title = "Options",
         description = "The options to set to customize the HTTP client"
     )
-    @PluginProperty(dynamic = true)
+    @PluginProperty(dynamic = true, group = "advanced")
     protected RequestOptions options;
 
     protected HttpConfiguration httpClientConfigurationWithOptions() throws IllegalVariableEvaluationException {
@@ -71,32 +71,39 @@ public abstract class AbstractBlueskyConnection extends Task implements Runnable
     @Builder
     public static class RequestOptions {
         @Schema(title = "Connection timeout", description = "Time allowed to establish a server connection before failing")
+        @PluginProperty(group = "execution")
         private final Property<Duration> connectTimeout;
 
         @Schema(title = "Read timeout", description = "Max time allowed for reading data from the server before failing; defaults to 10s")
         @Builder.Default
+        @PluginProperty(group = "execution")
         private final Property<Duration> readTimeout = Property.ofValue(Duration.ofSeconds(10));
 
         @Schema(title = "Read idle timeout", description = "How long a read connection may stay idle before closing; defaults to 5 minutes")
         @Builder.Default
+        @PluginProperty(group = "execution")
         private final Property<Duration> readIdleTimeout = Property.ofValue(Duration.of(5, ChronoUnit.MINUTES));
 
         @Schema(title = "Connection pool idle timeout", description = "How long an idle connection stays in the pool before closure; defaults to 0s")
         @Builder.Default
+        @PluginProperty(group = "execution")
         private final Property<Duration> connectionPoolIdleTimeout = Property.ofValue(Duration.ofSeconds(0));
 
         @Schema(title = "Max content length", description = "Maximum response size in bytes; defaults to 10 MB")
         @Builder.Default
+        @PluginProperty(group = "execution")
         private final Property<Integer> maxContentLength = Property.ofValue(1024 * 1024 * 10);
 
         @Schema(title = "Default charset", description = "Charset used for requests when none is specified; defaults to UTF-8")
         @Builder.Default
+        @PluginProperty(group = "advanced")
         private final Property<Charset> defaultCharset = Property.ofValue(StandardCharsets.UTF_8);
 
         @Schema(
             title = "HTTP headers",
             description = "HTTP headers to include in the request"
         )
+        @PluginProperty(group = "advanced")
         public Property<Map<String, String>> headers;
     }
 }
