@@ -7,8 +7,9 @@
 
 ## Why
 
-- This plugin integrates Kestra with Bluesky.
-- It provides tasks that post messages to Bluesky (AT Protocol).
+- What user problem does this solve? Teams need to post messages to Bluesky (AT Protocol) from orchestrated workflows instead of relying on manual console work, ad hoc scripts, or disconnected schedulers.
+- Why would a team adopt this plugin in a workflow? It keeps Bluesky steps in the same Kestra flow as upstream preparation, approvals, retries, notifications, and downstream systems.
+- What operational/business outcome does it enable? It reduces manual handoffs and fragmented tooling while improving reliability, traceability, and delivery speed for processes that depend on Bluesky.
 
 ## How
 
