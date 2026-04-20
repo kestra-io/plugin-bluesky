@@ -9,6 +9,12 @@ kestra:
       base-path: /tmp/unittest
   url: https://mysuperhost.com/kestra/ui
 
+  worker:
+    controllers:
+      type: STATIC
+      static:
+        endpoints:
+          - host: localhost
 micronaut:
   server:
     port: 59443
