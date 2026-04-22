@@ -48,7 +48,7 @@ public abstract class BlueskyTemplate extends AbstractBlueskyConnection {
         Never use your main account password here.
         """)
     @NotNull
-    @PluginProperty(group = "main")
+    @PluginProperty(secret = true, group = "main")
     protected Property<String> appPassword;
 
     @Schema(title = "Base URL", description = "The base URL of the Bluesky PDS (Personal Data Server). Defaults to `https://bsky.social`.")
