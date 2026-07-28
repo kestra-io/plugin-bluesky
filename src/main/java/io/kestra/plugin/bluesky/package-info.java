@@ -1,4 +1,5 @@
 @PluginSubGroup(
+    title = "Bluesky",
     description = "This sub-group of plugins contains tasks for Bluesky (AT Protocol) notifications.",
     categories = PluginSubGroup.PluginCategory.BUSINESS
 )
