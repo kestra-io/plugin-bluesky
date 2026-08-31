@@ -105,6 +105,11 @@ public abstract class BlueskyTemplate extends AbstractBlueskyConnection {
     }
 
     private String getPostText(RunContext runContext) throws Exception {
+        var rTextBody = runContext.render(this.textBody).as(String.class).orElse("");
+        if (!rTextBody.isBlank()) {
+            return rTextBody;
+        }
+
         final var rTemplateUri = runContext.render(this.templateUri).as(String.class);
 
         if (rTemplateUri.isPresent()) {
@@ -117,7 +122,7 @@ public abstract class BlueskyTemplate extends AbstractBlueskyConnection {
             return runContext.render(template, rTemplateVars);
         }
 
-        return runContext.render(this.textBody).as(String.class).orElse("");
+        return "";
     }
 
     private BlueskySession createSession(RunContext runContext, HttpClient client, String baseUrl,

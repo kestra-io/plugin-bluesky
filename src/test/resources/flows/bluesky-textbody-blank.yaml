@@ -1,0 +1,19 @@
+id: bluesky-textbody-blank
+namespace: io.kestra.tests
+
+inputs:
+  - id: baseUrl
+    type: STRING
+    defaults: "http://localhost:59443"
+
+tasks:
+  - id: bluesky
+    type: io.kestra.plugin.bluesky.BlueskyExecution
+    identifier: "testhandle.bsky.social"
+    appPassword: "test-app-password"
+    baseUrl: "{{ inputs.baseUrl }}"
+    executionId: "{{ execution.id }}"
+    textBody: "{{ '' }}"
+    customMessage: "myCustomMessage"
+    customFields:
+      Environment: "DEV"
