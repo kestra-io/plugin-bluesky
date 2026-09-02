@@ -4,7 +4,7 @@ Post execution alerts and flow summaries to Bluesky from Kestra flows.
 
 ## Authentication
 
-All tasks require `identifier` (your Bluesky handle, e.g. `myhandle.bsky.social`, or email address, required) and `appPassword` (a Bluesky app password generated from Settings → Privacy and Security → App Passwords; never use your main account password, required). Optionally set `baseUrl` (the Bluesky PDS base URL, default `https://bsky.social`) and `options` for HTTP client configuration (connect timeout, read timeout, custom headers). Store secrets in [secrets](https://kestra.io/docs/concepts/secret) and apply connection properties globally with [plugin defaults](https://kestra.io/docs/workflow-components/plugin-defaults).
+All tasks require `identifier` (your Bluesky handle, e.g. `myhandle.bsky.social`, or email address, required) and `appPassword` (a Bluesky app password generated from Settings → Privacy and Security → App Passwords; never use your main account password, required). Optionally set `baseUrl` (the Bluesky PDS base URL, default `https://bsky.social`) and `options` for HTTP client configuration (connect timeout, read timeout, custom headers). Store secrets in [secrets](https://kestra.io/docs/concepts/secret) and set connection properties on each task.
 
 ## Tasks
 
