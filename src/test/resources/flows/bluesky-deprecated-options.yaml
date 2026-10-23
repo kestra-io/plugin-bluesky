@@ -1,0 +1,20 @@
+id: bluesky-deprecated-options
+namespace: io.kestra.tests
+
+inputs:
+  - id: baseUrl
+    type: STRING
+    defaults: "http://localhost:59443"
+
+tasks:
+  - id: bluesky
+    type: io.kestra.plugin.bluesky.BlueskyExecution
+    identifier: "testhandle.bsky.social"
+    appPassword: "test-app-password"
+    baseUrl: "{{ inputs.baseUrl }}"
+    executionId: "{{ execution.id }}"
+    textBody: "Sent with deprecated HTTP options"
+    options:
+      readTimeout: PT30S
+      connectionPoolIdleTimeout: PT10S
+      maxContentLength: 1024

@@ -76,7 +76,7 @@ import io.kestra.core.models.annotations.PluginProperty;
                     executionId: "{{ trigger.executionId ?? execution.id }}"
                     customMessage: "Deployment completed successfully!"
                     options:
-                      readTimeout: PT5S
+                      readIdleTimeout: PT30S
                       headers:
                         X-Datacenter: "eu-west-1"
 
